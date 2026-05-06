@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Lab02SpringbootBasicsApplication<lab-02-springboot-basics>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.lab02.Lab02SpringbootBasicsApplication",
+            "projectName": "lab-02-springboot-basics",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

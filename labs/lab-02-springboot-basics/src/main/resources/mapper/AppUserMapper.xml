@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.lab02.mapper.AppUserMapper">
+
+    <resultMap id="appUserResultMap" type="AppUserRecord">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="role" column="role"/>
+    </resultMap>
+
+    <select id="findById" resultMap="appUserResultMap">
+        select id, username, password, nickname, email, role
+        from app_user
+        where id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="appUserResultMap">
+        select id, username, password, nickname, email, role
+        from app_user
+        where username = #{username}
+    </select>
+
+    <select id="listUsersOrderByVulnerable" resultMap="appUserResultMap">
+        select id, username, password, nickname, email, role
+        from app_user
+        order by ${sortField}
+    </select>
+
+    <select id="listUsersOrderBySafe" resultMap="appUserResultMap">
+        select id, username, password, nickname, email, role
+        from app_user
+        order by
+        <choose>
+            <when test="sortField == 'id'">id</when>
+            <when test="sortField == 'username'">username</when>
+            <when test="sortField == 'nickname'">nickname</when>
+            <when test="sortField == 'email'">email</when>
+            <otherwise>id</otherwise>
+        </choose>
+    </select>
+
+    <select id="searchUsersVulnerable" resultMap="appUserResultMap">
+        select id, username, password, nickname, email, role
+        from app_user
+        <where>
+            <if test="username != null and username != ''">
+                username = #{username}
+            </if>
+            <if test="role != null and role != ''">
+                and role = #{role}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchUsersSafe" resultMap="appUserResultMap">
+        select id, username, password, nickname, email, role
+        from app_user
+        <where>
+            role = #{role}
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateProfileByUsername">
+        update app_user
+        set nickname = #{nickname},
+            email = #{email}
+        where username = #{username}
+    </update>
+
+    <update id="updateUserSelectiveVulnerable">
+        update app_user
+        <set>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="role != null and role != ''">role = #{role},</if>
+        </set>
+        where username = #{username}
+    </update>
+
+    <update id="updateUserSelectiveSafe">
+        update app_user
+        <set>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+        </set>
+        where username = #{username}
+    </update>
+
+</mapper>

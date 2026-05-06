@@ -1,0 +1,17 @@
+.DS_Store
+
+# IDE
+.idea/
+*.iml
+
+# Build outputs
+target/
+out/
+
+# Local tools and downloads
+tools/
+downloads/
+
+# Logs and temp files
+*.log
+*.tmp

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring 异常演示</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 40px;
+            line-height: 1.5;
+        }
+        button {
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+        pre {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Spring 异常返回演示</h1>
+    <p>点击按钮后，会调用 <code>POST /api/demo/exception</code>，后端故意抛出异常。</p>
+    <button id="triggerBtn" type="button">触发异常</button>
+    <pre id="result">等待触发...</pre>
+
+    <script>
+        const triggerBtn = document.getElementById('triggerBtn');
+        const result = document.getElementById('result');
+
+        triggerBtn.addEventListener('click', async function () {
+            result.textContent = '请求中...';
+            try {
+                const response = await fetch('/api/demo/exception', {
+                    method: 'POST'
+                });
+                const body = await response.json();
+                result.textContent = JSON.stringify({
+                    status: response.status,
+                    body: body
+                }, null, 2);
+            } catch (error) {
+                result.textContent = '前端请求失败: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
