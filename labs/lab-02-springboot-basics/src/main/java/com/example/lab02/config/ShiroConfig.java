@@ -12,8 +12,10 @@ import org.apache.shiro.spring.web.config.ShiroWebFilterConfiguration;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("!test")
 public class ShiroConfig {
 
     @Bean
