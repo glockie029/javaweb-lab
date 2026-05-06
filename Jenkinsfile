@@ -33,6 +33,14 @@ pipeline {
         }
 
         stage('Semgrep') {
+            script {
+                def exists = sh(script: 'command -v semgrep', returnStatus: true) == 0
+
+                if (!exists) {
+                    echo "Semgrep is missing, executing install......"
+                    sh 'apt-get update && apt-get install -y semgrep'
+                }
+            }
             steps {
                 sh '''
                     mkdir -p reports/semgrep
