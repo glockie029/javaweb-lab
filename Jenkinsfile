@@ -11,11 +11,6 @@ pipeline {
         SEMGREP_REPORT = 'reports/semgrep/semgrep.json'
     }
 
-    tools {
-        jdk 'jdk11'
-        maven 'maven-3.9.9'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -58,18 +53,13 @@ pipeline {
 
         stage('SonarQube Scan') {
             steps {
-                script {
-                    def jdk17Home = tool name: 'jdk17', type: 'hudson.model.JDK'
-                    withSonarQubeEnv('sonarqube') {
-                        withEnv(["JAVA_HOME=${jdk17Home}", "PATH+JAVA=${jdk17Home}/bin"]) {
-                            sh '''
-                                mvn -B -f "${MODULE_DIR}/pom.xml" \
-                                  org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
-                                  -Dsonar.projectKey=lab-02-springboot-basics \
-                                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-                            '''
-                        }
-                    }
+                withSonarQubeEnv('sonarqube') {
+                    sh '''
+                        mvn -B -f "${MODULE_DIR}/pom.xml" \
+                          org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
+                          -Dsonar.projectKey=lab-02-springboot-basics \
+                          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                    '''
                 }
             }
         }
