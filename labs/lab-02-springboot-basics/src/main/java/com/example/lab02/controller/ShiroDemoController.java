@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.validation.Valid;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +47,8 @@ public class ShiroDemoController {
     }
 
     @GetMapping("/me")
-    @RequiresAuthentication
+    // 当前学习代码改为由 ShiroConfig 中的 URL 过滤链保护，
+    // 不再依赖 @RequiresAuthentication 注解代理。
     public ApiResponse<Map<String, Object>> currentUser() {
         Subject subject = SecurityUtils.getSubject();
         Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -60,8 +59,8 @@ public class ShiroDemoController {
     }
 
     @GetMapping("/admin")
-    @RequiresAuthentication
-    @RequiresRoles("ADMIN")
+    // 当前学习代码改为由 ShiroConfig 中的 authc + roles[ADMIN] 路径规则保护，
+    // 避免注解授权链与 starter 自动配置发生装配冲突。
     public ApiResponse<Map<String, Object>> adminOnly() {
         Subject subject = SecurityUtils.getSubject();
         Map<String, Object> data = new LinkedHashMap<String, Object>();

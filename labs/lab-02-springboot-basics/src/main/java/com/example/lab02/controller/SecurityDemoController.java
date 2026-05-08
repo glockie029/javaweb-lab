@@ -24,7 +24,7 @@ public class SecurityDemoController {
     public ApiResponse<Map<String, Object>> currentUser(Principal principal, Authentication authentication) {
         Map<String, Object> data = new LinkedHashMap<String, Object>();
         data.put("username", principal.getName());
-        data.put("authorities", authentication.getAuthorities());
+        data.put("authorities", authentication.getDetails());
         return ApiResponse.success("security authenticated demo", data);
     }
 
