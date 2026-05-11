@@ -1,5 +1,6 @@
 package com.example.lab02.handler;
 
+import com.example.lab02.aop.DemoForbiddenException;
 import com.example.lab02.common.ApiResponse;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -43,5 +44,23 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleShiroUnauthorized(UnauthorizedException exception) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ApiResponse.failure("shiro role not allowed"));
+    }
+
+    @ExceptionHandler(DemoForbiddenException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleAopDemoForbidden(DemoForbiddenException exception) {
+        Map<String, String> data = new LinkedHashMap<String, String>();
+        data.put("exceptionType", exception.getClass().getSimpleName());
+        data.put("exceptionMessage", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.failure("aop access denied", data));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleIllegalArgument(IllegalArgumentException exception) {
+        Map<String, String> data = new LinkedHashMap<String, String>();
+        data.put("exceptionType", exception.getClass().getSimpleName());
+        data.put("exceptionMessage", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.failure("invalid request argument", data));
     }
 }

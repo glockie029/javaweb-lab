@@ -26,3 +26,17 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,beans
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  jwt:
+    secret: lab02-jwt-demo-secret-key-please-change-2026
+    expiration-ms: 3600000
