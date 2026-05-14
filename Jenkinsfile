@@ -55,13 +55,15 @@ pipeline {
 
         stage('SonarQube Scan') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh '''
-                        mvn -B -f "${MODULE_DIR}/pom.xml" \
-                          org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
-                          -Dsonar.projectKey=lab-02-springboot-basics \
-                          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-                    '''
+                dir("${MODULE_DIR}") {
+                    withSonarQubeEnv('sonarqube') {
+                        sh '''
+                            mvn -B \
+                              org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
+                              -Dsonar.projectKey=lab-02-springboot-basics \
+                              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                        '''
+                    }
                 }
             }
         }
