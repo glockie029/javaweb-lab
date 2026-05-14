@@ -25,7 +25,8 @@ public class DeserializationDemoController {
 
     @GetMapping("/sample-note")
     public ApiResponse<Map<String, Object>> sampleNotePayload() throws IOException {
-        return ApiResponse.success("java serialization sample payload", deserializationDemoService.buildSamplePayload());
+        return ApiResponse.success("java serialization sample payload",
+                deserializationDemoService.buildSamplePayload());
     }
 
     @GetMapping("/sample-gadget")
@@ -40,7 +41,8 @@ public class DeserializationDemoController {
 
     @PostMapping("/gadget-reset")
     public ApiResponse<Map<String, Object>> resetGadgetState() {
-        return ApiResponse.success("harmless gadget state reset", deserializationDemoService.resetHarmlessGadgetState());
+        return ApiResponse.success("harmless gadget state reset",
+                deserializationDemoService.resetHarmlessGadgetState());
     }
 
     @PostMapping("/vuln/java")

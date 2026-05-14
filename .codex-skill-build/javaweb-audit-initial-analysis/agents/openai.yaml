@@ -1,0 +1,4 @@
+interface:
+  display_name: "审计初始分析"
+  short_description: "快速识别 Java Web 项目结构、技术栈、入口点与审计落点"
+  default_prompt: "使用 $javaweb-audit-initial-analysis 对当前 Java Web 项目做审计初始分析并输出结构图。"

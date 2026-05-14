@@ -2,6 +2,8 @@ package com.example.lab02.handler;
 
 import com.example.lab02.aop.DemoForbiddenException;
 import com.example.lab02.common.ApiResponse;
+import com.example.lab02.service.CommandExecutionException;
+import com.example.lab02.service.SsrfDemoFetchException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.shiro.authc.AuthenticationException;
@@ -62,5 +64,33 @@ public class GlobalExceptionHandler {
         data.put("exceptionMessage", exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.failure("invalid request argument", data));
+    }
+
+    @ExceptionHandler(InterruptedException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> InterruptedArg(InterruptedException exception) {
+        Map<String, String> data = new LinkedHashMap<String, String>();
+        data.put("exceptionType", exception.getClass().getSimpleName());
+        data.put("exceptionMessage", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.failure("命令进程运行失败!", data));
+    }
+
+    @ExceptionHandler(CommandExecutionException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleCommandExecution(
+            CommandExecutionException exception) {
+        Map<String, String> data = new LinkedHashMap<String, String>();
+        data.put("exceptionType", exception.getClass().getSimpleName());
+        data.put("exceptionMessage", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.failure("命令进程运行失败!", data));
+    }
+
+    @ExceptionHandler(SsrfDemoFetchException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleSsrfFetch(SsrfDemoFetchException exception) {
+        Map<String, String> data = new LinkedHashMap<String, String>();
+        data.put("exceptionType", exception.getClass().getSimpleName());
+        data.put("exceptionMessage", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                .body(ApiResponse.failure("server-side fetch failed", data));
     }
 }
